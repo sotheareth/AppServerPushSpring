@@ -1,0 +1,95 @@
+// Apply the java plugin to add support for Java
+apply plugin: "java"
+apply plugin: "war"
+apply plugin: "eclipse-wtp"
+
+targetCompatibility = "1.7"
+sourceCompatibility = "1.7"
+
+
+// In this section you declare where to find the dependencies of your project
+repositories {
+    // Use "jcenter" for resolving your dependencies.
+    // You can declare any Maven/Ivy/file repository here.
+    mavenLocal()
+    mavenCentral()
+}
+
+
+
+// In this section you declare the dependencies for your production and test code
+dependencies {
+	
+	ext.springVersion = "3.2.8.RELEASE"
+
+    // The production code uses the SLF4J logging API at time
+    providedCompile "javax.servlet:servlet-api:2.5"
+    compile (
+    	"org.slf4j:slf4j-api:1.7.18",
+    	"org.codehaus.jackson:jackson-mapper-asl:1.7.1",
+    	"org.springframework:spring-aop:$springVersion",
+    	"org.springframework:spring-beans:$springVersion",
+    	"org.springframework:spring-context:$springVersion",
+    	"org.springframework:spring-context-support:$springVersion",
+		"org.springframework:spring-core:$springVersion",
+		"org.springframework:spring-jdbc:$springVersion",
+		"org.springframework:spring-orm:$springVersion",
+		"org.springframework:spring-test:$springVersion",
+		"org.springframework:spring-tx:$springVersion",
+		"org.springframework:spring-web:$springVersion",
+		"org.springframework:spring-webmvc:$springVersion",
+		"org.springframework.security:spring-security-crypto:3.1.4.RELEASE",
+		"net.iharder:base64:2.3.7",
+		"net.tanesha.recaptcha4j:recaptcha4j:0.0.7",
+		"javax.mail:mail:1.4.7",
+		"org.springframework.ldap:spring-ldap-core:1.3.1.RELEASE",
+		"org.springframework.ldap:spring-ldap-core-tiger:1.3.1.RELEASE",
+		"org.springframework.security:spring-security-ldap:3.2.3.RELEASE",
+		"org.springframework.security:spring-security-core:$springVersion",
+		"org.springframework.security:spring-security-web:$springVersion",
+		"org.springframework.security:spring-security-taglibs:$springVersion",
+		"org.springframework.security:spring-security-config:$springVersion",
+		"org.mybatis:mybatis-spring:1.1.0",
+		"com.microsoft.sqlserver:sqljdbc4:4.0",
+		"commons-dbcp:commons-dbcp:1.4",
+		"javax.servlet:jstl:1.1.2",
+		"taglibs:standard:1.1.2",
+		"log4j:log4j:1.2.14",
+		"org.slf4j:slf4j-log4j12:1.5.8",
+		"org.slf4j:slf4j-api:1.5.8",
+		"commons-fileupload:commons-fileupload:1.2.1",
+		"commons-io:commons-io:1.4",
+		"commons-collections:commons-collections:3.2.1",
+		"org.apache.poi:poi:3.6",
+		project(":service"),
+		"org.apache.httpcomponents:httpclient:4.5.2")
+    
+
+    // Declare the dependency for your favourite test framework you want to use in your tests.
+    // TestNG is also supported by the Gradle Test task. Just change the
+    // testdependency to test"org.testng:testng:6.8.1" and add
+    // "test.useTestNG()" to your build script.
+    testCompile "junit:junit:4.12"
+}
+
+sourceSets {
+	main.java.srcDir "src/main"
+	test.java.srcDir "src/test"
+}
+
+jar {
+	from configurations.compile.collect { zipTree it}
+}
+
+war{
+	archiveName "jqGridSpring.war"
+}
+
+eclipse {
+  wtp {
+    component {
+      contextPath = "jqGridSpring"
+    }
+  }
+}
+
