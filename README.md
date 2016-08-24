@@ -1,1 +1,2 @@
-Application Server work with notification service client
+- Application Server work with notification service client
+- This work with Notification project
